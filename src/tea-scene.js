@@ -33,10 +33,10 @@ export default class TeaScene {
     this.setFlavour('jasmine');
     this.resize=()=>{
       const w=host.clientWidth,h=host.clientHeight;if(w<1||h<1||this.disposed)return;
-      this.mobile=window.innerWidth<650;
+      this.mobile=window.innerWidth<=650;
       this.renderer.setSize(w,h);this.renderer.getDrawingBufferSize(this.resolution);
       this.refractionTarget.setSize(this.resolution.x,this.resolution.y);this.iceTarget.setSize(this.resolution.x,this.resolution.y);
-      this.camera.aspect=w/h;this.camera.position.z=this.mobile?9.8:9.4;this.camera.position.x=0;this.camera.lookAt(0,-.02,0);this.camera.updateProjectionMatrix();this.updateBackdropRect();this.needsRender=true;
+      this.camera.aspect=w/h;this.camera.position.z=9.4;this.camera.position.x=0;this.camera.lookAt(0,-.02,0);this.camera.updateProjectionMatrix();this.updateBackdropRect();this.needsRender=true;
     };
     this.observer=new ResizeObserver(this.resize);this.observer.observe(host);this.resize();
     this.visibility=new IntersectionObserver(([e])=>{this.active=e.isIntersecting;});this.visibility.observe(host);
@@ -311,6 +311,18 @@ export default class TeaScene {
     const time=this.reduced?0:(now-this.start)/1000;
     this.progress=this.reduced?this.target:lerp(this.progress,this.target,1-Math.exp(-dt*10));
     const story=this.progress,motion=storyMotion(story),p=motion.pour,tilt=smooth(.17,.58,p),reveal=smooth(.12,.33,p),fill=smooth(.49,.92,p),finish=smooth(.93,1,p);
+    // Keep the portrait bottle full-sized and leave room for the alternating
+    // copy columns. Widen the shot continuously only when it begins to pour.
+    const portraitTravel=this.mobile?clamp((9.4*Math.tan(17*Math.PI/180)*this.camera.aspect-.95)/1.30,.25,1):1;
+    if(this.mobile){
+      const framing=smooth(0,.42,p),distance=Math.max(12.5,4.9/(2*Math.tan(17*Math.PI/180)*this.camera.aspect));
+      const compact=this.host.clientHeight<480;
+      const targetX=(compact?.35:.9)*framing,targetY=lerp(-.02,compact?.8:1.4,framing);
+      this.camera.position.set(targetX,targetY+.57,lerp(9.4,distance,framing));
+      this.camera.lookAt(targetX,targetY,0);
+    }else{
+      this.camera.position.set(0,.55,9.4);this.camera.lookAt(0,-.02,0);
+    }
     let switching=this.switchAnimation,switchProgress=switching?clamp((now-switching.started)/760,0,1):0;
     if(switching&&(switchProgress>=1||(switching.hero&&story>=.16))){this.applyFlavour(switching.to);switching=null;switchProgress=0;}
     if(switching&&!switching.hero&&switchProgress>=.5&&!switching.applied){
@@ -338,10 +350,10 @@ export default class TeaScene {
     const requiredX=this.impact.x-this.horizontalSpeed*duration-this.rotatedMouth.x;
     const requiredZ=this.impact.z-this.depthSpeed*duration-this.rotatedMouth.z;
     const alignment=smooth(.17,.46,p);
-    this.bottle.position.set(lerp(this.mobile?0:1.05,requiredX,alignment),bottleY,lerp(0,requiredZ,alignment));
+    this.bottle.position.set(lerp(1.05*portraitTravel,requiredX,alignment),bottleY,lerp(0,requiredZ,alignment));
     if(story<.69){
       const turn=switching&&!switching.hero?Math.PI*2*smooth(0,1,switchProgress)*switching.direction:0;
-      this.bottle.position.set(this.mobile?motion.x*.07:motion.x,.15+idle,0);
+      this.bottle.position.set(motion.x*portraitTravel,.15+idle,0);
       this.bottle.rotation.set(.02+this.pointer.y*.025,motion.yaw-.06+turn+this.pointer.x*.06,-.12+Math.sin(story*5)*.045);
       this.bottle.scale.setScalar(motion.scale);
     }

@@ -16,6 +16,7 @@ Open the URL printed by Vite. For a production build, run `npm run build`; the d
 - Switch between Jasmine and Aged citrus with carousel arrows, the flavour selector, arrow keys, or a horizontal swipe on the scene. The bottles, page colours, and flavour descriptions change together.
 - Scroll through four chapters: choose a flavour, explore its botanicals, turn the bottle to read its details, and pour. Chapter navigation jumps directly to each moment.
 - The bottle turns a full 360 degrees before uncapping, tilting, and pouring into a glass. Scrolling backwards reverses the sequence.
+- Phones keep the same alternating bottle-and-text composition as desktop, with a consistently large bottle through the detail chapters and a gradual camera adjustment for the pour.
 - Switch flavours in any chapter without losing your scroll position.
 - Switch between iced and warm tea; the warm version replaces ice with steam.
 - Expand FAQs at the end of the page.

@@ -51,7 +51,7 @@ function App(){
     </header>
     <main>
       <section id="flavours" className="story-track" ref={stage} aria-label="Explore Guipin tea">
-        <div className={`story-stage chapter-${chapter}`} data-chapter={chapter}>
+        <div className={`story-stage chapter-${chapter}`} data-chapter={chapter} style={{'--pour-copy-opacity':Math.max(0,Math.min(1,(progress-.75)/.05))}}>
           <div className="stage-haze"/><div className="stage-grid"/><div className="stage-vignette"/>
           <div className="giant-flavour" aria-hidden="true">{tea.title}</div>
           <div ref={host} className="scene" role="img" aria-label={`${tea.name}: ${['3D bottle carousel','bottle rotating to reveal the flavour','rotating bottle with zero sugar and zero calorie details','tea pouring over ice'][chapter]}`} onTouchStart={e=>{touch.current={x:e.touches[0].clientX,y:e.touches[0].clientY};}} onTouchEnd={e=>{if(!touch.current)return;const dx=e.changedTouches[0].clientX-touch.current.x,dy=e.changedTouches[0].clientY-touch.current.y;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.5)switchTea(other);touch.current=null;}}>
