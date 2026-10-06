@@ -1,0 +1,9 @@
+node_modules
+dist
+.DS_Store
+output
+.playwright-cli
+.vercel
+.env
+.env.*
+!.env.example
