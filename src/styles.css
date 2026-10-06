@@ -21,7 +21,7 @@
   .pour-copy.detail-copy{top:14%}
   .serving-toggle{margin-top:12px;flex-direction:column;align-items:stretch}
   .serving-toggle button{padding:8px 10px}
-  
+
 }
 
 .replay-button{display:grid;place-items:center;width:40px;height:40px;padding:0;background:none;color:#e4e8d9;border-radius:50%;flex-shrink:0}.replay-button:hover{color:var(--accent);background:#ffffff0d}

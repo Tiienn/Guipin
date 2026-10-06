@@ -19,6 +19,7 @@ Open the URL printed by Vite. For a production build, run `npm run build`; the d
 - Phones keep the same alternating bottle-and-text composition as desktop, with a consistently large bottle through the detail chapters and a gradual camera adjustment for the pour.
 - Switch flavours in any chapter without losing your scroll position.
 - Switch between iced and warm tea; the warm version replaces ice with steam.
+- Use the replay icon beside the flavour selector to return to the beginning from any chapter.
 - Expand FAQs at the end of the page.
 - Mobile navigation, keyboard focus, reduced-motion support, and a product-photo fallback when WebGL is unavailable.
 - The 3D scene stops rendering while outside the viewport or while the tab is hidden.
